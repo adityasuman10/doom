@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            background: #000000;
+            color: rgb(255, 255, 255);
+            font-family: monospace;
+            white-space: pre;
+            margin: 0;
+            padding: 20px;
+            overflow: hidden;
+        }
+        
+        .fire {
+            transition: color 0.4s, text-shadow 0.4s;
+        }
+        
+        .electric {
+            transition: color 0.4s, text-shadow 0.4s;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        const asciiArt = `
+                                                                                                )   (  (    (
+                                                                                             )  () @@  )  (( (
+                                                                                      (      (  )( @@  (  )) ) (
+                                                                                    (    (  ( ()( /---\\   (()( (
+         _______                                                                         )  ) )(@ !O O! )@@  ( ) ) )
+        <   ____)                                                                   ) (  ( )( ()@ \\ o / (@@@@@ ( ()( )
+     /--|  |(   |                                                                (  )  ) ((@@@@(@@ !o! @@@@(@@@@@)() (
+    |   >   \\___|                                                                 @@@)(@@)@@)@ /---\\-/---\\ )@@@@@()( )
+    |  /---------+\\                   				                   (@@@@)@@@( // /-----\\ \\\\ @@@)@@@@@(  .
+    | |   \\    ____\\____________=|____________ __                          @@@@@@@@@@@@@(@@@ // @ /---\\ @ \\\\ @(@@@(@@@ .  .
+    |  \\   \\  )         _=_//// ======= |_____|__ @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ O @@@ /-\\ @@@ O @@(@@)@@ @   .
+    |   \\   \\/____---------|_))))_|-----                            @@@@@@@@@@@@@@@@@@@@@@@ !! @@@@ % @@@@ !! @@)@@@@@@ .. .
+    |   |\\_________|_)))/ 			   			        .    @@@@@@ !! @@ /---\\ @@ !! @@(@@@ @ . .
+     \\__==========                                                        *        .    @@ /MM  /\\O   O/\\  MM\\ @@@@@@@. .
+        |   |-\\   \\         		                                  (       .      @ !!!  !! \\-/ !!  !!! @@@@@ .
+        |   |  \\   \\                                                       )   -    -   .  @@@@ !!@@ @@!!  .(. @@@.  .. .
+        |   |   \\   \\                                                     (    /   .(  . \\)). ( |O  )( O! @@@@ . )      .
+        |   |   /   /                                                      ) (      )).  ((  .) !! ((( !! @@ (. ((. .   .
+        |   |  /   /                                                ()  ))   ))   .( ( ( ) ). ( !!  )( !! ) ((   ))  ..
+        |   |_<   /                                                ( ) ( (  ) )   (( )  )).) ((/ |  (  | \\ (  )) ((. ).
+    ____<_____\\\\__\\_______________________________________________(___)_))_((_(____))__(_(___.oooO_____Oooo.(_(_)_)((________________________________   
+
+`;
+
+        // Strict color palettes
+        const orangeShades = ['#FF4500', '#FF8C00', '#FFA500', '#FFD700'];
+        const blueShades = ['#0000FF', '#4169E1', '#1E90FF', '#87CEEB'];
+        const purpleShades = ['#4B0082', '#800080', '#9932CC', '#8A2BE2'];
+        const yellowShades = ['#FFD700', '#FFEA00', '#FFFF00', '#FFD800'];
+
+        function colorizeArt(art) {
+            return art.split('\n').map(line => {
+                return line.split('').map(char => {
+                    if(char === '@') return `<span class="fire">${char}</span>`;
+                    if(char === '(' || char === ')') return `<span class="electric">${char}</span>`;
+                    return char;
+                }).join('');
+            }).join('\n');
+        }
+
+        document.body.innerHTML = colorizeArt(asciiArt);
+
+        // Animation functions
+        function animateElement(element, palette) {
+            let current = 0;
+            const direction = Math.random() > 0.5 ? 1 : -1;
+            const speed = 300 + Math.random() * 400;
+            
+            setInterval(() => {
+                current = (current + direction) % palette.length;
+                if(current < 0) current = palette.length - 1;
+                
+                element.style.color = palette[current];
+                element.style.textShadow = `0 0 8px ${palette[current]}55`;
+            }, speed);
+        }
+
+        // Initialize animations with strict color sets
+        document.querySelectorAll('.fire').forEach(char => {
+            animateElement(char, [...orangeShades, ...yellowShades]);
+        });
+
+        document.querySelectorAll('.electric').forEach(char => {
+            animateElement(char, [...blueShades, ...purpleShades]);
+        });
+    </script>
+</body>
+</html>
